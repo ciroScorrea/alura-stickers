@@ -1,11 +1,9 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URL;
-import java.awt.Color;
-import java.awt.Font;
 
 import javax.imageio.ImageIO;
 
@@ -13,6 +11,8 @@ public class Stickers {
 
     public void create(InputStream inputStream, String nomeArquivo) throws Exception{
         // Dica: control + . em cima do objeto permite escolher para criar uma variável
+        // F2 em palavra selecionada: troca por novo texto em todo lugar que for encontrada.
+        // alt shif O = faz importes necessários.
         // thumbnail https://m.media-amazon.com/images/M/MV5BNDJhYTk2MTctZmVmOS00OTViLTgxNjQtMzQxOTRiMDdmNGRjXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX128_CR0,1,128,176_AL_.jpg
         // retirada: ._V1_UX128_CR0,1,128,176_AL_
         // maior https://m.media-amazon.com/images/M/MV5BNDJhYTk2MTctZmVmOS00OTViLTgxNjQtMzQxOTRiMDdmNGRjXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX128_CR0,1,128,176_AL_.jpg
@@ -42,7 +42,7 @@ public class Stickers {
         graphics.drawString("TOPZERA", 10, newHeight - 10);
 
         //escrever a nova imagem um novo arquivo
-        ImageIO.write(newImage, "png", new File("sticker/stk.png"));
+        ImageIO.write(newImage, "png", new File(nomeArquivo));
     }
 
 

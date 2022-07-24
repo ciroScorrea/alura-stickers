@@ -1,40 +1,33 @@
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
-import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
         // fazer uma conexao http e buscar os top 250 filmes
-        var url = "https://alura-imdb-api.herokuapp.com/movies";
-        URI endereco = URI.create(url);
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder(endereco).GET().build();
-        HttpResponse<String> response = client.send(request,  BodyHandlers.ofString());
-        String body = response.body();
-        // extrair só os dados que interessam (título, poster, classificação)
-        JsonParser parser = new JsonParser();
-        List<Map<String, String>> listaDeFilmes = parser.parse(body);
+        //var url = "https://alura-imdb-api.herokuapp.com/movies";
+        //ProviderContents contentsProvider = new IMDBContents();
+
+        var url = "https://api.nasa.gov/planetary/apod?api_key=POkzLYYt0Nb3mqQ6eq3bNm4cyizaUwxvwVZElAfj&start_date=2022-06-12&end_date=2022-06-14";
+        ProviderContents contentsProvider = new NasaContents();
+
+        var http = new ClientHttp();
+        String json = http.getData(url);
+        
         
         //melhor deixar fora do for para não alocar muito recurso.
-        Stickers stickers = new Stickers(); 
-        
+        Stickers stickers = new Stickers();         
+        List<Contents> atributsList = contentsProvider.getContents(json);
         //exibir
-        for (Map<String,String> filme : listaDeFilmes) {
-            String urlImage = filme.get("image");
-            String title = filme.get("title");
-            String fileName = title + ".png";
-            InputStream inputStream = new URL(urlImage).openStream();
+        for (int i = 0; i < 3; i++) {
+
+            Contents contents = atributsList.get(i);
+
+            String fileName = "sticker/" + contents.getTitle() + ".png";
+            InputStream inputStream = new URL(contents.getUrlImage()).openStream();
             
             stickers.create(inputStream, fileName);
-            System.out.println(title);            
-            System.out.println(filme.get("image"));            
-            System.out.println(filme.get("imDbRating"));
+            System.out.println(contents.getTitle());            
             System.out.println();            
         }
 
